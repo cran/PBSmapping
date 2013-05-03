@@ -16,7 +16,7 @@
  *
  * Paul Wessel, SOEST
  *
- *	Copyright (c) 1996-2012 by P. Wessel and W. H. F. Smith
+ *	Copyright (c) 1996-2013 by P. Wessel and W. H. F. Smith
  *	See LICENSE.TXT file for copying and redistribution conditions.
  *
  *	This program is free software; you can redistribute it and/or modify
@@ -52,7 +52,7 @@
 
 #ifndef _GSHHS
 #define _GSHHS
-#define _POSIX_SOURCE 1		/* GSHHS code is POSIX compliant */
+//#define _POSIX_SOURCE 1		/* GSHHS code is POSIX compliant */
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -7,7 +7,7 @@
 }
 \usage{
 addLines (polys, xlim = NULL, ylim = NULL,
-    polyProps = NULL, lty = NULL, col = NULL, \dots)
+    polyProps = NULL, lty = NULL, col = NULL, arrows = FALSE, \dots)
 }
 \arguments{
   \item{polys}{\link{PolySet} to add (\emph{required}).}
@@ -18,6 +18,9 @@ addLines (polys, xlim = NULL, ylim = NULL,
     supersede these data.}
   \item{lty}{vector of line types (cycled by \code{PID}).}
   \item{col}{vector of colours (cycled by \code{PID}).}
+  \item{arrows}{Boolean value; if \code{TRUE}, add arrows using the
+    \link{arrows} function and consider the arguments \code{angle},
+    \code{length}, and \code{code}.}
   \item{\dots}{additional \code{\link{par}} parameters for the
     \code{\link{lines}} function.}
 }
@@ -45,12 +48,16 @@ addLines (polys, xlim = NULL, ylim = NULL,
   \code{\link{thickenPolys}}.
 }
 \examples{
-#--- create a PolySet to plot
-polys <- data.frame(PID=rep(1,4),POS=1:4,X=c(0,1,1,0),Y=c(0,0,1,1))
-polys <- as.PolySet(polys, projection=1)
-#--- plot the PolySet
-plotLines(polys, xlim=c(-.5,1.5), ylim=c(-.5,1.5), projection=1)
-#--- add the PolySet to the plot (in a different style)
-addLines(polys, lwd=5, col=3)
+local(envir=.PBSmapEnv,expr={
+  oldpar = par(no.readonly=TRUE)
+  #--- create a PolySet to plot
+  polys <- data.frame(PID=rep(1,4),POS=1:4,X=c(0,1,1,0),Y=c(0,0,1,1))
+  polys <- as.PolySet(polys, projection=1)
+  #--- plot the PolySet
+  plotLines(polys, xlim=c(-.5,1.5), ylim=c(-.5,1.5), projection=1)
+  #--- add the PolySet to the plot (in a different style)
+  addLines(polys, lwd=5, col=3)
+  par(oldpar)
+})
 }
 \keyword{aplot}

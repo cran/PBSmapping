@@ -1,5 +1,5 @@
 /*=============================================================================
-  Copyright (C) 2003-2013  Fisheries and Oceans Canada
+  Copyright (C) 2003-2013 Fisheries and Oceans Canada
 
   This file is part of PBS Mapping.
 
@@ -18,51 +18,32 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 =============================================================================*/
 /*-----------------------------------------------------------------------------
-  File:   globals.h
-   
-  Constants global to many files.
+  File: clipperWrapper.hpp
 
-  History:
-    ?? ??? ???? [Nicholas Boers]
-      - original file
-    17 Jun 2004 [Nicholas Boers]
-      - cleaned up
-    19 Aug 2004 [Nicholas Boers]
-      - changed Earth radius to 6371.3
-    14 Nov 2004 [Nicholas Boers]
-      - updated for PBSINT type
+  Interface between R and the Clipper library.
+
+  Author: Nicholas Boers
   ---------------------------------------------------------------------------*/
+#ifndef _CLIPPERWRAPPER_H_
+#define _CLIPPERWRAPPER_H_
 
-#ifndef _GLOBALS_H
-#define _GLOBALS_H
+#ifndef STANDALONE
 
-#if defined(_SPLUS_) || defined(_STANDALONE_)
-#define PBSINT          long
-#else
-#define PBSINT          int
-#endif
+#include <R.h>
+#include <Rdefines.h>
 
-#ifndef TRUE
-#define TRUE            1
-#endif /* TRUE */
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#ifndef FALSE
-#define FALSE           0
-#endif /* FALSE */
+SEXP clipperWrapper (SEXP operation,
+		     SEXP sPID, SEXP sSID, SEXP sPOS, SEXP sX, SEXP sY,
+		     SEXP cPID, SEXP cSID, SEXP cPOS, SEXP cX, SEXP cY);
 
-#ifndef M_PI
-#define M_PI            3.14159265358979323846
-#endif /* M_PI */
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
-/* Equatorial radius 6,378.14 km 
-   Polar radius 6,356.78 km 
-   Mean radius 6,371.3 km 
+#endif /* not defined STANDALONE */
 
-   Sources: 
-     http://en.wikipedia.org/wiki/Earth
-     http://en.wikipedia.org/wiki/Earth_radius */
-#ifndef MEAN_RADIUS
-#define MEAN_RADIUS     6371.3
-#endif /* MEAN_RADIUS */
-
-#endif /* _GLOBALS_H */
+#endif /* _CLIPPERWRAPPER_H_ */

@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2003-2012  Fisheries and Oceans Canada
+# Copyright (C) 2003-2013  Fisheries and Oceans Canada
 # Nanaimo, British Columbia
 # This file is part of PBS Mapping.
 #
@@ -32,16 +32,11 @@
 #   Specifications: Jon Schnute, Nicholas Boers, Rowan Haigh
 #   Code:           Nicholas Boers (and others as documented)
 #
-# Known Problems:
-#   - sp conversions (.pbsproj, SpatialPolygons2PolySet, SpatialLines2PolySet,
-#     SpatialPoints2EventData) incomplete and commented out at the end of this
-#     file.
-#
 # Change Log:
 #    See PBSmapping/ChangeLog
 #==============================================================================
 
-PBSprint <- FALSE;
+PBSprint <- FALSE
 
 #==============================================================================
 .addAxis <- function(xlim, ylim, tckLab, tck, tckMinor, ...)
@@ -264,7 +259,7 @@ PBSprint <- FALSE;
            # draw the circles, lines, and labels
            for (i in 1:length(r)) {
              symbols(legend.loc[1], legend.loc[2] + r[i] * ratio.y.x,
-                     circles=r[i], inches=FALSE, add=TRUE, bg=symbol.bg,
+                     circles=r[i], inches=FALSE, add=TRUE, bg=symbol.bg[length(r)-i+1],
                      fg=symbol.fg)
              lines(c(legend.loc[1], legend.loc[1] + r[1] + gap.x),
                    rep(legend.loc[2] + 2 * r[i] * ratio.y.x, 2))
@@ -335,7 +330,7 @@ PBSprint <- FALSE;
                 cex = legend.cex + 0.2, col = "black")
 
            # set positions for plotting of zero (later)
-           zlab <- c(x.title.leg, legend.loc[2]) }
+           zlab <- c(legend.loc[1] + legend.width / 8, legend.loc[2]) }
          )
 
   # plot the zero if need be
@@ -1486,7 +1481,7 @@ The function '", caller, "' requires the package(s) '", err, "'.\n",
 
 #==============================================================================
 # Default for 'projection' must be logical type.
-# For 'plotPoints()', 'cex'and 'pch' are art of '...' -- and they may equal
+# For 'plotPoints()', 'cex'and 'pch' are part of '...' -- and they may equal
 # NULL; when they equal NULL, don't try adding them to par()!
 .plotMaps <- function(polys, xlim, ylim, projection, plt, polyProps,
                       border, lty, col, colHoles, density, angle, bg,
@@ -1981,7 +1976,7 @@ The function '", caller, "' requires the package(s) '", err, "'.\n",
 #  legend in one of 4 corners or at a specific x-y positiion.
 #--------------------------------------------DC/RH
 addBubbles <- function(events, type = c("perceptual", "surface", "volume"),
-                       z.max = NULL, max.size = 0.8, symbol.zero = "+",
+                       z.max = NULL, min.size = 0, max.size = 0.8, symbol.zero = "+",
                        symbol.fg = rgb(0,0,0,0.60), symbol.bg = rgb(0,0,0,0.30),
                        legend.pos = "bottomleft", legend.breaks = NULL,
                        show.actual = FALSE,
@@ -2006,6 +2001,9 @@ addBubbles <- function(events, type = c("perceptual", "surface", "volume"),
   # adjust legend breaks if necessary
   if (is.null(legend.breaks) || is.na(legend.breaks))
     legend.breaks <- pretty(range(events$Z), 3)[-1]
+  else if (is.vector(legend.breaks) && length(legend.breaks) == 1)
+    legend.breaks <- pretty(range(events$Z), legend.breaks)[-1]
+
   if (show.actual)
     legend.breaks <- signif(legend.breaks / max(legend.breaks)
                             * max(events$Z, na.rm=TRUE), 3)
@@ -2014,37 +2012,79 @@ addBubbles <- function(events, type = c("perceptual", "surface", "volume"),
   usr.xdiff <- par("usr")[2] - par("usr")[1]
   usr.ydiff <- par("usr")[4] - par("usr")[3]
 
-  # for sizing in inches, it's important to USE the X rather than Y axis
+  # for sizing in inches, it's important to use the X rather than Y axis
   #
-  # max.size is diameter (inches); /2 for radius; /par()$pin[2] (inches)
+  # max.size is diameter (inches); /2 for radius; /par()$pin[1] (inches)
   # for fraction of width (inches); *usr.xdiff to convert to width to
   # user coordinates
-  stand.rad <- (max.size / 2) / par("pin")[1] * usr.xdiff;
-
+  #
+  # min.size is diameter (inches)
+  stand.rad <- (max.size / 2) / par("pin")[1] * usr.xdiff
+  stand.rad.min <- (min.size / 2) / par("pin")[1] * usr.xdiff
+  
   # sorting from large to small ensures that small bubbles will not be hidden
   # behind large bubbles
   events <- events[order(events$Z, decreasing=TRUE), ]
-
+ 
   # determine the size of each circle/legend circle based on the selected type
   type <- match.arg(type)
   switch(type,
          volume = {
-           radii <- ((events$Z / z.max)^(1/3)) * stand.rad;
-           radii.leg <- ((legend.breaks / z.max)^(1/3)) * stand.rad },
+           radii     <- stand.rad.min + ((events$Z      / z.max)^(1/3)) * (stand.rad - stand.rad.min)
+           radii.leg <- stand.rad.min + ((legend.breaks / z.max)^(1/3)) * (stand.rad - stand.rad.min)
+         },
          surface = {
-           radii <- sqrt(events$Z / z.max) * stand.rad;
-           radii.leg <- sqrt(legend.breaks / z.max) * stand.rad },
+           radii     <- stand.rad.min + sqrt(events$Z      / z.max) * (stand.rad - stand.rad.min)
+           radii.leg <- stand.rad.min + sqrt(legend.breaks / z.max) * (stand.rad - stand.rad.min)
+         },
          perceptual = {
-           radii <- ((events$Z / z.max)^0.57) * stand.rad;
-           radii.leg <- ((legend.breaks / z.max)^0.57) * stand.rad }
+           # default (if type unspecified)
+           radii     <- stand.rad.min + ((events$Z      / z.max)^0.57) * (stand.rad - stand.rad.min)
+           radii.leg <- stand.rad.min + ((legend.breaks / z.max)^0.57) * (stand.rad - stand.rad.min)
+         }
          )
+
+  # handle multiple colours
+  if (is.vector (symbol.bg) && length(symbol.bg) > 1)
+    getColour <- colorRamp (symbol.bg)
+  else
+    # ensure that the function returns X colours when called with X values
+    getColour <- function(x) { t(col2rgb(symbol.bg, alpha=TRUE))[rep(1,length(x)), ] }
+
+  # obtain colours for the background (as a matrix)
+  bgs <- getColour((events$Z - min(legend.breaks)) / (max(legend.breaks) - min(legend.breaks)))
+  if (ncol(bgs) == 3)
+    bgs <- cbind(bgs, 255) # add the alpha channel if necessary
+  # ... now deal with Z values outside of the range
+  if (is.vector (symbol.bg) && length(symbol.bg) > 1)
+    {
+      outside <- events$Z < min(legend.breaks) | events$Z > max(legend.breaks)
+      if (sum(outside) > 0)
+        {
+          bgs[outside,] <- matrix(c(255,255,255,0), ncol=4)[rep(1,sum(outside)), ]
+          warning(sum(outside),
+                  " events were outside the legend range and were plotted with",
+                  " transparent interiors.  Consider using the addBubbles",
+                  " arguments 'legend.breaks', 'min.size', and 'symbol.zero'",
+                  " to improve the output.")
+        }
+    }
+  
+  # obtain colours for the legend (as a matrix)
+  bgs.leg <- getColour((legend.breaks - min(legend.breaks)) / (max(legend.breaks) - min(legend.breaks)))
+  if (ncol(bgs.leg) == 3)
+    bgs.leg <- cbind(bgs.leg, 255) # add the alpha channel if necessary
+  
+  # convert the matrices to hex values (#RRGGBBAA)
+  bgs <- rgb(bgs[,1], bgs[,2], bgs[,3], bgs[,4], maxColorValue=255)
+  bgs.leg <- rgb(bgs.leg[,1], bgs.leg[,2], bgs.leg[,3], bgs.leg[,4], maxColorValue=255)
 
   # compare events$Z to 0; cannot simply use "== 0" given floating-point type
   isZero <- unlist(lapply(events$Z, all.equal, current = 0)) == "TRUE"
 
   # plot the circles (data with non-zero radii)
   symbols(events$X[!isZero], events$Y[!isZero], circles = radii[!isZero],
-          inches = FALSE, bg = symbol.bg, fg = symbol.fg, add = TRUE)
+          inches = FALSE, bg = bgs[!isZero], fg = symbol.fg, add = TRUE)
 
   # plot the zero symbol for points (where necessary)
   if (any(isZero) && (!is.logical(symbol.zero) || symbol.zero)) {
@@ -2064,7 +2104,7 @@ addBubbles <- function(events, type = c("perceptual", "surface", "volume"),
     if (!any(isZero))
       symbol.zero <- FALSE;
     .addBubblesLegend (radii.leg, usr.xdiff, usr.ydiff, symbol.zero, symbol.fg,
-                       symbol.bg, legend.pos, legend.breaks, legend.type,
+                       bgs.leg, legend.pos, legend.breaks, legend.type,
                        legend.title, legend.cex, ...)
   }
 
@@ -2238,7 +2278,7 @@ addLabels <- function(data, xlim = NULL, ylim = NULL, polyProps = NULL,
 #  '...' contains arguments for the 'lines()' function
 #---------------------------------------------------------NB
 addLines <- function(polys, xlim = NULL, ylim = NULL, polyProps = NULL,
-                     lty = NULL, col = NULL, ...)
+                     lty = NULL, col = NULL, arrows = FALSE, ...)
 {
   # check 'polys'
   polys <- .validatePolySet(polys);
@@ -2267,37 +2307,59 @@ addLines <- function(polys, xlim = NULL, ylim = NULL, polyProps = NULL,
     return (NULL);
   }
 
+  # valid columns for PolyProps (described in ?lines under ... and in ?arrows)
+  if (arrows)
+    pPropsCols <- c("lty", "lwd", "col", "pch", "lend", "ljoin", "lmitre",
+                    "angle", "length", "code")
+  else
+    pPropsCols <- c("lty", "lwd", "col", "pch", "lend", "ljoin", "lmitre",
+                    "type")
+  # properties that aren't included in par
+  nonParProps <- c("angle", "length", "code", "type")
+  
   # validate the polyProps argument
-  polyProps <- .validatePolyProps(polyProps, parCols = c("col", "lty"));
+  polyProps <- .validatePolyProps(polyProps, parCols = pPropsCols);
   if (is.character(polyProps))
     stop(paste("Invalid PolyData 'polyProps'.\n", polyProps, sep=""));
-
-  # names(NULL) == NULL, so first test is safe
   if (is.element("SID", names(polyProps))
       && !is.element("SID", names(polys))) {
     stop(
-"No polygons to plot since 'polyProps' contains SIDs but 'polys' does not.\n");
+"No lines to plot since 'polyProps' contains SIDs but 'polys' does not.\n");
   }
 
-  # build values for 'polyProps'
-  parValues <- list(col = 1, lty = par("lty"));
+  # obtain default values for 'polyProps': !par values from ?lines/?arrows
+  propDefaults <- append(par(setdiff(pPropsCols, nonParProps)),      # in par
+                         list(type="l",length=0.25,angle=30,code=2)) # !in par
   # don't replace attributes already in 'polyProps' with default values
-  parValues <- parValues[setdiff(names(parValues), names(polyProps))];
-
-  if (!is.null(col)) parValues[["col"]] <- col;
-  if (!is.null(lty)) parValues[["lty"]] <- lty;
+  propDefaults <- propDefaults[setdiff(names(propDefaults), c(names(polyProps)))]
+  # use this function's arguments to override defaults obtained from par
+  if (!is.null(col)) propDefaults[["col"]] <- col;
+  if (!is.null(lty)) propDefaults[["lty"]] <- lty;
+  # look into ..., too, and evaluate statements like
+  #   if (!is.null(list(...)$lwd)) propDefaults[[\"lwd\"]] <- list(...)$lwd;
+  pPropsColsTmp <- setdiff(pPropsCols, c("col", "lty"));
+  expr <- paste("if (!is.null(list(...)$", pPropsColsTmp,
+                ")) propDefaults[[\"", pPropsColsTmp,
+                "\"]] <- list(...)$", pPropsColsTmp,
+                sep="", collapse="; ");
+  eval(parse(text=expr))
 
   # adds an SID column to 'polyProps' if one exists in 'polys'
   polyProps <- .preparePolyProps(polys$PID, polys$SID, polyProps);
 
-  # flesh out 'polyProps' columns
-  if (length(parValues) > 0)
-    polyProps <- .addProps(type = "p", polyProps = polyProps, parValues);
+  # flesh out 'polyProps' columns (add propDefaults to polyProps, cycling by PID)
+  if (length(propDefaults) > 0)
+    polyProps <- .addProps(type = "p", polyProps = polyProps, propDefaults);
   polyPropsReturn <- polyProps;
 
   # create an index for the properties
-  polyProps$props <- paste(polyProps$col, polyProps$lty);
-
+  # use an expression like
+  #   polyProps$props <- paste(polyProps$lty, polyProps$lwd, ..., sep = "-");
+  expr <- paste("polyProps$props <- paste(",
+                paste("polyProps$", pPropsCols, sep="", collapse=", "),
+                ", sep=\"-\")", sep="");
+  eval(parse(text=expr));
+  
   # determine if we can use "fast IDs" (i.e., no 'paste')
   fastIDdig <- .createFastIDdig(polysA=polys, polysB=polyProps,
                                 cols=c("PID", "SID"));
@@ -2306,28 +2368,42 @@ addLines <- function(polys, xlim = NULL, ylim = NULL, polyProps = NULL,
   polyProps$IDs <- .createIDs(polyProps, cols=c("PID", "SID"), fastIDdig);
   polyPropsIdx <- split(polyProps$IDs, polyProps$props);
 
-  # reduce before split
-  parCols <- c("col", "lty");
-  toSplit <- polyProps[!duplicated(polyProps$props), c(parCols, "props")];
-  res <- split(toSplit[, parCols], toSplit$props);
-
   # create an 'IDs' column for 'polys'
   polys$IDs <- .createIDs(polys, cols=c("PID", "SID"), fastIDdig);
 
+  # reduce before split
+  toSplit <- polyProps[!duplicated(polyProps$props), c(pPropsCols, "props")];
+  res <- split(toSplit[, pPropsCols], toSplit$props);
+  
   # create lists of X/Y vertices
   polyx <- split(polys$X, polys$IDs);
   polyy <- split(polys$Y, polys$IDs);
 
   for (prop in names(polyPropsIdx)) {
     toSet <- as.vector(res[prop][[1]]);
-    col <- as.vector(toSet$col);
-    lty <- as.vector(toSet$lty);
 
-    # separate lines with NAs for plotting
+    # separate lines with NAs for plotting;
+    # for arrows, a start/end of NA does not produce a warning/error
     new.x <- .insertNAs(polyx, polyPropsIdx[[prop]]);
     new.y <- .insertNAs(polyy, polyPropsIdx[[prop]]);
 
-    lines(x = new.x, y = new.y, col = col, lty = lty, ...);
+    # when we call lines, set par values like
+    #   col = as.vector(toSet$col), lwd = as.vector(toSet$lwd), ...
+    if (arrows) {
+      eval(parse(text=paste("arrows(",
+                   "x0 = new.x[1:(length(new.x)-1)], ",
+                   "y0 = new.y[1:(length(new.y)-1)], ",
+                   "x1 = new.x[2:length(new.x)], ",
+                   "y1 = new.y[2:length(new.y)], ",
+                   paste(pPropsCols, " = as.vector(toSet$", pPropsCols, ")",
+                         sep="", collapse=", "), ")",
+                   sep="")))
+    } else {
+      eval(parse(text=paste("lines(x = new.x, y = new.y, ",
+                   paste(pPropsCols, " = as.vector(toSet$", pPropsCols, ")",
+                         sep="", collapse=", "), ")",
+                   sep="")))
+    }
   }
 
   # add to the class attribute
@@ -2474,7 +2550,7 @@ addPolys <- function(polys, xlim = NULL, ylim = NULL, polyProps = NULL,
   for (p in setdiff(pPropsCols, "density")) {
     # create an expression like
     #   if (!is.null(angle)) pPropsDefaults[["angle"]] <- angle;
-    # for each of the properties and evalute it
+    # for each of the properties and evaluate it
     expr <- paste("if (!is.null(", p, ")) pPropsDefs[[\"", p, "\"]] <- ", p,
                   sep="");
     eval(parse(text=expr));
@@ -4767,137 +4843,66 @@ isIntersecting <- function(polys, numericResult = FALSE)
 }
 
 #==============================================================================
-# operation is one of: DIFF, INT, XOR, UNION
-joinPolys <- function(polysA, polysB = NULL, operation = "INT", maxVert=1e+05)
+joinPolys <- function(polysA, polysB = NULL, operation = "INT")
 {
-  polysA <- .validatePolySet(polysA);
+  polysA <- .validatePolySet(polysA)
   if (is.character(polysA))
-    stop(paste("Invalid PolySet 'polysA'.\n", polysA, sep=""));
+    stop(paste("Invalid PolySet 'polysA'.\n", polysA, sep=""))
 
   if (!is.null(polysB)) {
-    polysB <- .validatePolySet(polysB);
+    polysB <- .validatePolySet(polysB)
     if (is.character(polysB))
-      stop(paste("Invalid PolySet 'polysB'.\n", polysB, sep=""));
+      stop(paste("Invalid PolySet 'polysB'.\n", polysB, sep=""))
   }
 
-  validOps <- c("DIFF", "INT", "XOR", "UNION");
+  validOps <- c("INT", "UNION", "DIFF", "XOR")
   if (!is.element(operation, validOps)) {
     stop(paste(
 "Invalid \"operation.\"  Must be one of: ", paste(validOps, collapse=", "),
-"\n"));
+"\n"))
   }
-  op <- which(is.element(validOps, operation)) - 1;
+  op <- which(is.element(validOps, operation)) - 1
 
-  # create the data structures that the C function expects
-  subRows <- nrow(polysA);
+  inputHasSID <- is.element("SID", names(polysA))
   if (!is.element("SID", names(polysA))) {
-    subID <- c(polysA$PID, integer(length = subRows), polysA$POS);
-  } else {
-    subID <- c(polysA$PID, polysA$SID, polysA$POS);
+    polysA$SID <- 1
   }
-  subXY <- c(polysA$X, polysA$Y);
-
-  # create the data structures that the C function expects
-  if (!is.null(polysB)) {
-    clipRows <- nrow(polysB);
-    if (!is.element("SID", names(polysB))) {
-      clipID <- c(polysB$PID, integer(length = clipRows), polysB$POS);
-    } else {
-      clipID <- c(polysB$PID, polysB$SID, polysB$POS);
-    }
-    clipXY <- c(polysB$X, polysB$Y);
+  if (!is.element("SID", names(polysB))) {
+    polysB$SID <- 1
   }
-  else {
-    clipRows <- 0;
-    clipID <- NULL;
-    clipXY <- NULL;
-  }
-
-  outCapacity <- maxVert;
 
   # call the C function
-  results <- .C("joinPolys",
-                operation = as.integer(op),
-                subID = as.integer(subID),
-                subXY = as.double(subXY),
-                subVerts = as.integer(subRows),
-                clipID = as.integer(clipID),
-                clipXY = as.double(clipXY),
-                clipVerts = as.integer(clipRows),
-                outID = integer(3 * outCapacity),
-                outXY = double(2 * outCapacity),
-                outRows = as.integer(outCapacity),
-                outStatus = integer(1),
-                PACKAGE = "PBSmapping");
-  # note: outRows is set to how much space is allocated -- the C function
-  #       should take this into consideration
+  results <- .Call("joinPolys",
+                   operation = as.integer(op),
+                   sPID = as.integer(polysA$PID),
+                   sSID = as.integer(polysA$SID),
+                   sPOS = as.integer(polysA$POS),
+                   sX   = as.numeric(polysA$X),
+                   sY   = as.numeric(polysA$Y),
+                   cPID = as.integer(polysB$PID),
+                   cSID = as.integer(polysB$SID),
+                   cPOS = as.integer(polysB$POS),
+                   cX   = as.numeric(polysB$X),
+                   cY   = as.numeric(polysB$Y),
+                   PACKAGE = "PBSmapping")
 
-  if (results$outStatus == 1) {
-    stop(paste(
-"Insufficient physical memory for processing.",
-"Try reducing this function's 'maxVerts' argument to reduce its memory",
-"requirements.\n",
-               sep="\n"));
-  }
-  if (results$outStatus == 2) {
-    stop(paste(
-"Insufficient memory allocated for output.",
-"Try increasing this function's 'maxVerts' argument to increase the memory",
-"that it allocates for the output.\n",
-               sep = "\n"));
-  }
-  if (results$outStatus == 3) {
-    stop(paste(
-"While processing the results, the program encountered an already processed",
-"hole.  A bug or an invalid PolySet may have caused this behaviour.  Please",
-"upgrade to the latest version of the software and check the PolySet, and",
-"if the problem persists, please file a bug report.\n",
-               sep = "\n"));
-  }
-  if (results$outStatus == 4) {
-    stop(paste(
-"While processing the results, the program skipped a hole.  A bug or an",
-"invalid PolySet may have caused this behaviour.  Please upgrade to the",
-"latest version of the software and check the PolySet, and if the problem",
-"persists, please file a bug report.\n",
-               sep = "\n"));
-  }
-  if (results$outStatus == 5) {
-    stop(
-"The required PolySet 'polysA' is missing.\n");
-  }
-  if (results$outStatus == 6) {
-    stop(paste(
-"PolySet 'polysA' must contain more than one unique PID when not specifying",
-"'polysB'.\n", sep="\n"));
-  }
-
-  # determine the number of rows in the result
-  outRows <- as.vector(results$outRows);
-
-  # extract the data from the C function results
-  if (outRows > 0) {
-    d <- data.frame(PID = results$outID[1:outRows],
-                    SID = results$outID[(outCapacity+1):(outCapacity+outRows)],
-                    POS = results$outID[(2*outCapacity+1):(2*outCapacity+outRows)],
-                    X = results$outXY[1:outRows],
-                    Y = results$outXY[(outCapacity+1):(outCapacity+outRows)]);
-
+  if (nrow(results) > 0) {
     # the C routine might add an SID column when one previously didn't
     # exist...
-    if (!is.element("SID", names(polysA)) && all(d$SID == 1))
-      d$SID <- NULL;
+    if (!inputHasSID && all(results$SID == 1)) {
+      results$SID <- NULL
+    }
 
     # copy the 'projection' and 'zone' attribute from the input
-    attr(d, "projection") <- attr(polysA, "projection");
-    attr(d, "zone") <- attr(polysA, "zone");
+    attr(results, "projection") <- attr(polysA, "projection")
+    attr(results, "zone") <- attr(polysA, "zone")
 
-    if (!is.PolySet(d, fullValidation = FALSE))
-      class(d) <- c("PolySet", class(d));
+    if (!is.PolySet(results, fullValidation = FALSE))
+      class(results) <- c("PolySet", class(results))
 
-    return(d);
+    return(results)
   } else {
-    return(NULL);
+    return(NULL)
   }
 }
 
@@ -5200,7 +5205,7 @@ plotPolys <- function(polys, xlim = NULL, ylim = NULL, projection = FALSE,
 #==============================================================================
 print.EventData <- function(x, ...)
 {
-  if (exists("PBSprint") && PBSprint) {
+  if (exists("PBSprint") && (PBSprint || .PBSmapEnv$PBSprint)) {
     print(summary.EventData(x), ...);
   } else {
     print(data.frame(unclass(x)));
@@ -5211,7 +5216,7 @@ print.EventData <- function(x, ...)
 #==============================================================================
 print.LocationSet <- function(x, ...)
 {
-  if (exists("PBSprint") && PBSprint) {
+  if (exists("PBSprint") && (PBSprint || .PBSmapEnv$PBSprint)) {
     print(summary.LocationSet(x), ...);
   } else {
     print(data.frame(unclass(x)));
@@ -5222,7 +5227,7 @@ print.LocationSet <- function(x, ...)
 #==============================================================================
 print.PolyData <- function(x, ...)
 {
-  if (exists("PBSprint") && PBSprint) {
+  if (exists("PBSprint") && (PBSprint || .PBSmapEnv$PBSprint)) {
     print(summary.PolyData(x), ...);
   } else {
     print(data.frame(unclass(x)));
@@ -5233,7 +5238,7 @@ print.PolyData <- function(x, ...)
 #==============================================================================
 print.PolySet <- function(x, ...)
 {
-  if (exists("PBSprint") && PBSprint) {
+  if (exists("PBSprint") && (PBSprint || .PBSmapEnv$PBSprint)) {
     print(summary.PolySet(x), ...);
   } else {
     print(data.frame(unclass(x)));
