@@ -4842,7 +4842,10 @@ isIntersecting <- function(polys, numericResult = FALSE)
   }
 }
 
-#==============================================================================
+
+#joinPolys------------------------------2014-03-10
+# Join one or two PolySets using a logic operation.
+#-----------------------------------------------NB
 joinPolys <- function(polysA, polysB = NULL, operation = "INT")
 {
   polysA <- .validatePolySet(polysA)
@@ -4886,9 +4889,10 @@ joinPolys <- function(polysA, polysB = NULL, operation = "INT")
                    cY   = as.numeric(polysB$Y),
                    PACKAGE = "PBSmapping")
 
-  if (nrow(results) > 0) {
-    # the C routine might add an SID column when one previously didn't
-    # exist...
+  if (is.null(results)){
+    return(NULL)
+  } else if (nrow(results) > 0) {
+    # the C routine might add an SID column when one previously didn't exist...
     if (!inputHasSID && all(results$SID == 1)) {
       results$SID <- NULL
     }
@@ -4905,8 +4909,8 @@ joinPolys <- function(polysA, polysB = NULL, operation = "INT")
     return(NULL)
   }
 }
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~joinPolys
 
-#==============================================================================
 locateEvents <- function(EID, n = 512, type = "p", ...)
 {
   if (!missing(EID)) {
@@ -5784,7 +5788,7 @@ thinPolys <- function(polys, tol = 1, filter = 3)
   }
 }
 
-#importShapefile------------------------2012-04-04
+#importShapefile------------------------2013-12-19
 # importShapefile (Nick Boers)
 # This function has several slow parts:
 # 1) conversion of the matrix (verts) to X and Y columns in a data frame
@@ -5804,7 +5808,7 @@ importShapefile <- function (fn, readDBF=TRUE, projection=NULL, zone=NULL,
 	# call to normalizePath added to perform ~ expansion; otherwise,
 	# pathnames beginning with a ~ fail in the later call to
 	# Rshapeget
-	fn <- normalizePath(fn, mustWork=F)
+	fn <- normalizePath(fn, mustWork=FALSE)
 	fn <- .getBasename(fn, "shp")
 
 	# test for the required '.shx' file
@@ -5840,7 +5844,8 @@ importShapefile <- function (fn, readDBF=TRUE, projection=NULL, zone=NULL,
 	zP=is.element(PC,0); PC[zP]=1; PC[!zP]=0
 
 	# reformat results
-	if (shpType == 3 || shpType == 5) {  # PolySet
+	#if (shpType == 3 || shpType == 5) {  # PolySet
+	if (shpType %in% c(3,13,23, 5,15,25)) {  # PolyLine, PolyLineZ, PolyLineM, Polygon, PolygonZ, PolygonM
 		# create preliminary PID/SID columns
 		PID <- rep(1:(length(unique(shpID))), times=nParts)
 		SID <- unlist(lapply(split(nParts, 1:(length(nParts))), "seq"))
@@ -5863,7 +5868,8 @@ importShapefile <- function (fn, readDBF=TRUE, projection=NULL, zone=NULL,
 		# build the data frame
 		df <- data.frame(PID=PID, SID=SID, POS=POS, X=verts[, 1], Y=verts[, 2])
 
-		if (shpType == 5) {
+		#if (shpType == 5) {
+		if (shpType %in% c(5,15,25)) {
 			# PolySet: polygons: reorder vertices for holes
 			or <- .calcOrientation (df)
 			# where "orientation" == -1, we need to reverse the POS
@@ -5881,7 +5887,8 @@ importShapefile <- function (fn, readDBF=TRUE, projection=NULL, zone=NULL,
 			}
 		}
 		class(df) <- c("PolySet", class(df))
-	} else if (shpType == 1) {  # EventData
+	#} else if (shpType == 1) {  # EventData
+	} else if (shpType %in% c(1,11,21)) {  # Point, PointZ, PointM
 		EID <- 1:(length(unique(shpID)))
 		df <- data.frame(EID=EID, X=verts[, 1], Y=verts[, 2])
 		class(df) <- c("EventData", class(df))
@@ -5947,7 +5954,8 @@ importShapefile <- function (fn, readDBF=TRUE, projection=NULL, zone=NULL,
 	if (!is.null(projection))
 		attr(df,"projection")=projection
 	return (df) }
-#----------------------------------importShapefile
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~importShapefile
+
 
 #2008-08-25----------------------------------NB/RH
 # 'projection' should equal "LL" (for longitude/latitude),

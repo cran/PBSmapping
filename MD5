@@ -1,9 +1,9 @@
 fdafc691aa5fb7f8e2a9e9521fef771b *COPYING
-7e8b9a6412f0d4952437075f09cc3152 *DESCRIPTION
+c40f7bd8fa6f81d43fdbd90a527873e4 *DESCRIPTION
 59a11c175fbcac0da948bf3e10b6b3d3 *NAMESPACE
-bfa528b2c2db9f75119f38276291471a *R/PBSfigs.r
-fc5fee2064c5f3bdd4fae4f9fc2bf9c5 *R/PBSmapping.r
-d5ac30c671c79158529551aa68f1e89c *R/tempCode.r
+509f5288a8cbbd0e50abe6b5139594d1 *R/PBSfigs.r
+8505433ee42169055fb402586bd0c6e6 *R/PBSmapping.r
+c78b0f1d9f6acc223e692f7073be3883 *R/tempCode.r
 93a811dd2b82dd4b03c41cf6c4a12765 *R/zzz.r
 d5f60302070d227af458654eaa8031d3 *data/bcBathymetry.rda
 1c4c62a7a7e60d00109cfa1017dfabd6 *data/datalist
@@ -33,11 +33,9 @@ cc92eb29d7511570a1731573ae79b8ce *demo/PBSfig10.R
 5ca33bf58ac25d4867009a3fb20ed3f8 *inst/Utils/convUL.cpp
 15b7f395426a138ed6c0fc20b67e68cc *inst/Utils/findPolys.cpp
 d53830cdc7e4ddf7b3c59ff119bee9f0 *inst/Utils/makeUtils.bat
-0bcf87cb84bc744bb239ec9103744697 *inst/doc/ChangeLog.txt
+9c87cbc7507ceb8b8d243bef8ea07473 *inst/doc/ChangeLog.txt
 829530fac4f32527369fb53bf87dcf7a *inst/doc/PBSmapping-UG.pdf
-d72b6e1a05b6b534d591e52f37b59801 *inst/doc/PBSmappingIntro.R
-e7004759ad49b48416ef9af75d832add *inst/doc/PBSmappingIntro.Rnw
-e960dad59195f0c28b7d91a107b71e45 *inst/doc/PBSmappingIntro.pdf
+78132000df56eec49a635f34475ae931 *inst/doc/PBSmappingIntro.pdf
 58e241a8755cc1391779cee114f31d83 *inst/doc/index.html
 0e0a11fa20b4d5a359a280c6c116ab64 *man/EventData.Rd
 ce68b6e26fa34a3757d5b583ffa76d0f *man/LocationSet.Rd
@@ -109,7 +107,7 @@ ff038b1797a8355d7a29ae7825091c9a *man/thinPolys.Rd
 45140bbfb31b4b3a7eb6ac8742d94103 *src/PBSmapping.c
 485f27ae26489c3e9fc4a331ccfecc12 *src/clipper.cpp
 fc4c40b2487e932b3a55cb94c4ab04da *src/clipper.h
-be575be8748cfcf7718b45a23ba07537 *src/clipperWrapper.cpp
+bca8184c49fd2bcb2a00c202685cdf27 *src/clipperWrapper.cpp
 c1188ab2d6f1aa0e3755275e77743828 *src/clipperWrapper.h
 484cee2eb13b0fe4bc259e394e1bbaf7 *src/convGSHHS.c
 1f89d1d325fbe61583000e7341e09587 *src/conversions.c
@@ -117,7 +115,7 @@ c1188ab2d6f1aa0e3755275e77743828 *src/clipperWrapper.h
 26698e96cea34910f4b21dac66aff84e *src/floating.h
 2c3726bb579c0e8b824c66dbb232ede9 *src/globals.h
 47b5701e0851c52cf794dcdca2a035bf *src/gshhs.c
-c5b1ed759e77ec0d4965847add22734e *src/gshhs.h
+96beb769b5645e84b7f2d589b879a1e2 *src/gshhs.h
 194fb0c76489084c4890b02583faf481 *src/polygons.c
 2a0bc4bc0c1f6fcc8ff8f7e8e42e056a *src/polygons.h
 2e3e19c588a284896a2ae8407b65751b *src/thin.c
