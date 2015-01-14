@@ -4,9 +4,30 @@ Authors:  JTS = Jon T. Schnute
           NB  = Nicholas Boers
           RH  = Rowan Haigh
           ACB = Alex Couture-Beil
+          DC  = Denis Chabot
 -----------------------------------
 
-2.67  2014-03-27
+2.68  2015-01-14
+  - R CMD check: ``... used in a situation where it does not exist'' -- identified as a temporary bug in R-devel by Duncan Murdoch:
+	http://r.789695.n4.nabble.com/R-CMD-check-quot-quot-used-in-a-situation-where-it-does-not-exist-td4701779.html
+  - Resolved missing line feed in `Makefile'; converted format from DOS to UNIX for `Makefile' and `*.cpp' files in `/inst/Utils'. (NB 1/14)
+  - Eliminate warning when compiling `clipper.cpp'. (NB 1/12)
+	An unused variable is declared within `clipper.cpp'. This commit turns that declaration into a comment to eliminate the warning.
+  - Added namespace when calling `deldir' and `read.dbf'. (NB 1/9)
+	PBSmapping calls `deldir' (package deldir) and `read.dbf' (package foreign),and for each, the code now specifies the namespace.
+  - Updated clipper library from 5.1.4 to 5.1.6. (NB 1/9)
+  - Added `SystemRequirements: C++11' to the DESCRIPTION file to alert user that compilation and linking should be done with a C++11 compiler. (NB 1/9)
+	The clipper library used by PBSmapping operates on coordinates stored as integers, and for those integers, it uses the "long long" type that 
+	was introduced in the C++11 standard. When an R package requires C++11 features, the DESCRIPTION file must state this requirement.
+  - Bumped up version for next posting to CRAN in 2015.
+
+2.67  2014-12-15
+  - Changed line in `clipperWrapper.cpp' from `ulong64 val = llabs(*f++);' to `ulong64 val = (ulong64)fabs(*f++);' (NB 12/17)
+	The C compiler 'clang' with -Wall reports that PBSmapping is misusing the C function abs in their code: see
+	http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Portable-C-and-C_002b_002b-code
+  - Added Nicholas J. Lewin-Koh and Roger Bivand as authors because we use their C code `Rshapeget' for the function `importShapefile'. (RH 12/17)
+  - Added new argument `includeBdry' to functions `findCells' and `findPolys' -- see Issue 33. (RH 12/15)
+  - Incorporated temporary fix for borders in function `importGSHHS' until more robust solution is found. (RH 6/23)
   - Jon requested that Rowan becomes the package Maintainer. (RH 3/27)
   - Bumped up version for next posting to CRAN using builds under R-3.0.3 (RH 3/20)
 
