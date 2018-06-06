@@ -1,8 +1,8 @@
 fdafc691aa5fb7f8e2a9e9521fef771b *COPYING
-5852fe8c4a3b1c7be77d508af59928cd *DESCRIPTION
+128c5de1ed999b50ab2497cdba29679d *DESCRIPTION
 00611876b0ab76057ecee8d1045a1c2f *NAMESPACE
 2aaa6670072e4057adb2943ca66912dc *R/PBSfigs.r
-6d411cc24bfe2fd31168343ed69183dc *R/PBSmapping.r
+9a0acb31ef0c1995e86e9c94098a079b *R/PBSmapping.r
 cf888f8fc0e074e5f13ca071645b14ab *R/extraCode.r
 577a08c81e94aea40cd0b8a67201bc2a *R/zzz.r
 136624c7e3127f342e87cdeed7499257 *data/bcBathymetry.rda
@@ -33,10 +33,10 @@ cc92eb29d7511570a1731573ae79b8ce *demo/PBSfig10.R
 2f48af60f9c6db579e84ac778e118375 *inst/Utils/convUL.cpp
 be1e9279f6857513285e1aa1c3fdc826 *inst/Utils/findPolys.cpp
 24a6b8609209cd7c9717c6cdad14c6ec *inst/Utils/makeUtils.bat
-793388aef8b457094e81aefef5a56180 *inst/doc/ChangeLog.txt
+68216a991c29c3dcf7f1914611dc490e *inst/doc/ChangeLog.txt
+52bdac8b5374a8ac860af1fd5d5cea17 *inst/doc/Links.html
 5782e96a9b7a620764b0aee2c4e8bd1c *inst/doc/PBSmapping-UG.pdf
 d15904d4cbe8472e7f8cf4273788dd77 *inst/doc/PBSmappingIntro.pdf
-515f613e22a931a1cdc2954db2a5af20 *inst/doc/index.html
 92bdeab8c40aeabcc96ed368356c2323 *man/EventData.Rd
 3610778a04a223adc1f1691a1b8b92e6 *man/LocationSet.Rd
 2ee40a576f79049484b467d30868f65d *man/PBSmapping.Rd
@@ -105,7 +105,7 @@ ff038b1797a8355d7a29ae7825091c9a *man/thinPolys.Rd
 3394c254e57ca9ac1c9d394bc8f86cda *man/towTracks.Rd
 d6ec5a3f986b516e0e737749ed75473a *src/PBSmapping.c
 84a0f61892aba9ad732026771bafda43 *src/PBSmapping.h
-060262183ee8a3562dd30714e13a1220 *src/clipper.cpp
+e2c7090ceaeb5528cf330f065c836195 *src/clipper.cpp
 1eeec7850af4db031408aea184bc99c6 *src/clipper.h
 fb25149639efcc05e356e78e3adead48 *src/clipperWrapper.cpp
 061237a75456892594da02e471b03e32 *src/clipperWrapper.h
