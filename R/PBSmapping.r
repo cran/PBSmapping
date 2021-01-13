@@ -1,5 +1,5 @@
 ##==============================================================================
-## Copyright (C) 2003-2019  Fisheries and Oceans Canada
+## Copyright (C) 2003-2021  Fisheries and Oceans Canada
 ## Nanaimo, British Columbia
 ## This file is part of PBS Mapping.
 ##
