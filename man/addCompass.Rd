@@ -43,14 +43,14 @@ addCompass(X, Y, rot="magN", useWest=TRUE, year,
   \href{https://stat.ethz.ch/pipermail/r-sig-geo/2010-February/007564.html}{%
   [R-sig-Geo] How to display a compass rose on a map}
 
-  \href{http://wdc.kugi.kyoto-u.ac.jp/poles/polesexp.html}{%
+  \href{https://wdc.kugi.kyoto-u.ac.jp/poles/polesexp.html}{%
   Magnetic North, Geomagnetic and Magnetic Poles}
 }
 \author{
   \href{mailto:rowan.haigh@dfo-mpo.gc.ca}{Rowan Haigh}, Program Head -- Offshore Rockfish\cr
   Pacific Biological Station (PBS), Fisheries & Oceans Canada (DFO), Nanaimo BC\cr
-  \emph{locus opus}: Institute of Ocean Sciences (IOS), Sidney BC\cr
-  Last modified \code{Rd: 2021-01-04}
+  \emph{locus opus}: Regional Headquarters, Vancouver BC\cr
+  Last modified \code{Rd: 2022-07-05}
 }
 \seealso{
   \code{\link[PBSmapping]{addBubbles}},

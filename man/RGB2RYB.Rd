@@ -25,7 +25,7 @@ RYB2RGB(RYBmat)
 }
 \references{
 Sugita, J. and Takahashi, T. (2017)
-\href{https://danielhaim.com/research/downloads/Computational\%20RYB\%20Color\%20Model\%20and\%20its\%20Applications.pdf}{Computational RYB Color Model and its Applications}.
+\href{https://www.jstage.jst.go.jp/article/tievciieej/5/2/5_110/_article/-char/ja}{Computational RYB Color Model and its Applications}.
 IIEEJ Transactions on Image Electronics and Visual Computing 5(2): 110-122.
 
 Sugita, J. and Takahashi, T. (2015)
@@ -35,8 +35,8 @@ International Workshop on Applications in Information Technology, October 8-10, 
 \author{
   \href{mailto:rowan.haigh@dfo-mpo.gc.ca}{Rowan Haigh}, Program Head -- Offshore Rockfish\cr
   Pacific Biological Station (PBS), Fisheries & Oceans Canada (DFO), Nanaimo BC\cr
-  \emph{locus opus}: Institute of Ocean Sciences (IOS), Sidney BC\cr
-  Last modified \code{Rd: 2021-01-07}
+  \emph{locus opus}: Regional Headquarters, Vancouver BC\cr
+  Last modified \code{Rd: 2022-07-06}
 }
 \note{
   Opposite colours calculated in RYB space (1-RYB) are not always what one expects.

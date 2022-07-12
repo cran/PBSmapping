@@ -7,6 +7,18 @@ Authors:  JTS = Jon T. Schnute
           DC  = Denis Chabot
 -----------------------------------
 
+2.73.1 (2022-07-12) [Rcheck=T, Rbuild=T]
+  * R code
+    + Modified R function `.addBubblesLegend' to satisfy CRAN
+      - From : if (class(legend.pos) == "numeric") {
+      - To   : if (inherits(legend.pos, "numeric")) {
+  * C code
+    + Modified `clipperWrapper' to bring Sint and Sfloat into scope.
+      - moved `typedef int Sint; typedef double Sfloat;' from `clipperWrapper.cpp' to `clipperWrapper.h'
+    + Updated copyright dates in PBSmapping C source files.
+  * Documentation
+    + Updated a few Rd files with broken hyperlinks to Internet addresses.
+
 2.73.0 (2021-01-11) [Rcheck=T, Rbuild=T]
   * R code
     + Modified function `addBubbles' to accept negative data values. (RH 210111)

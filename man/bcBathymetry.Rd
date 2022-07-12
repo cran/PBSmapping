@@ -31,7 +31,7 @@
 }
 \references{
   Smith, W.H.F. and Sandwell, D.T. (1997)
-  \href{https://science.sciencemag.org/content/277/5334/1956}{Global seafloor topography from satellite altimetry and ship depth soundings}.
+  \href{https://www.science.org/doi/10.1126/science.277.5334.1956}{Global seafloor topography from satellite altimetry and ship depth soundings}.
   \emph{Science} \bold{277}, 1957-1962. \cr
   Website: \url{https://topex.ucsd.edu/WWW_html/mar_topo.html}
 }
@@ -41,8 +41,8 @@
 
   Maintainer: \href{mailto:rowan.haigh@dfo-mpo.gc.ca}{Rowan Haigh}, Program Head -- Offshore Rockfish\cr
   Pacific Biological Station (PBS), Fisheries & Oceans Canada (DFO), Nanaimo BC\cr
-  \emph{locus opus}: Institute of Ocean Sciences (IOS), Sidney BC\cr
-  Last modified \code{Rd: 2021-01-11}
+  \emph{locus opus}: Regional Headquarters, Vancouver BC\cr
+  Last modified \code{Rd: 2022-07-07}
 }
 \seealso{
 In package \pkg{graphics}:\cr
