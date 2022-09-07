@@ -1,7 +1,7 @@
 \name{bcBathymetry}
 \docType{data}
 \alias{bcBathymetry}
-\title{Data: Bathymetry Spanning British Columbia's Coast}
+\title{Data: Bathymetry Spanning BC Coast}
 \description{
   Bathymetry data spanning British Columbia's coast.
 }

@@ -4,7 +4,7 @@
 \title{Data: Pythagoras' Theorem Diagram PolySet}
 \description{
   \link{PolySet} of shapes to prove Pythagoras' Theorem:
-  \eqn{a^2 + b^2 = c^2}{a*a+b*b = c*c}.
+  \eqn{a^2 + b^2 = c^2}{a*a + b*b = c*c}.
 }
 \usage{data(pythagoras)}
 \format{
@@ -23,7 +23,7 @@
 \author{
   \href{https://academic.macewan.ca/boersn/}{Nicholas M. Boers}, Associate Professor -- Computer Science\cr
   MacEwan University, Edmonton AB\cr
-  Last modified \code{Rd: 2008-09-03}
+  Last modified \code{Rd: 2022-09-06}
 }
 \seealso{
   \code{\link{addPolys}},

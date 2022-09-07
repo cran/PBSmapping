@@ -1,5 +1,5 @@
 fdafc691aa5fb7f8e2a9e9521fef771b *COPYING
-01dd3d1482ff6765d3f18a0191294a54 *DESCRIPTION
+24ba210312344aa95c67e6affb4a41d6 *DESCRIPTION
 fd51a4314f6d9787ab263a7325edf059 *NAMESPACE
 2aaa6670072e4057adb2943ca66912dc *R/PBSfigs.r
 92b197a6d54031d23e5d5e4b63a65e5e *R/PBSmapping.r
@@ -34,7 +34,7 @@ cc92eb29d7511570a1731573ae79b8ce *demo/PBSfig10.R
 2f48af60f9c6db579e84ac778e118375 *inst/Utils/convUL.cpp
 be1e9279f6857513285e1aa1c3fdc826 *inst/Utils/findPolys.cpp
 24a6b8609209cd7c9717c6cdad14c6ec *inst/Utils/makeUtils.bat
-d160a92b4befbfc97102aaab4e68573d *inst/doc/ChangeLog.txt
+045308c6ff5005491a0220958b34629b *inst/doc/ChangeLog.txt
 8d327a3aa2fbb5af73e669f14dd95051 *inst/doc/Links.html
 5782e96a9b7a620764b0aee2c4e8bd1c *inst/doc/PBSmapping-UG.pdf
 d15904d4cbe8472e7f8cf4273788dd77 *inst/doc/PBSmappingIntro.pdf
@@ -43,7 +43,7 @@ b4913585229b99a8aab5def1f9e5f71c *man/LocationSet.Rd
 49c15c819d58173f6a614b2989b02fc3 *man/PBSmapping.Rd
 8a70984ed8165cd269a37dd477986fe1 *man/PBSprint.Rd
 b659d384f9ac95f6e55952f1a57b7f8e *man/PolyData.Rd
-926978296eb34daaa3372dc46f3c68d9 *man/PolySet.Rd
+8890b0c76f4b97ab4d11f3c3c3f57639 *man/PolySet.Rd
 4a2feac901b396b37c0390a7ec64e468 *man/RGB2RYB.Rd
 76b9683807b4783c069b1d6c37469fee *man/addBubbles.Rd
 e72ef418513e10c56c31e432dd07e626 *man/addCompass.Rd
@@ -53,8 +53,8 @@ cad3a6947910bc577c80ea8b8efe3df7 *man/addPoints.Rd
 ec136831fd593d97cabb439603666c0b *man/addPolys.Rd
 3f0bbea2be178fa872378460d4602492 *man/addStipples.Rd
 3b7eecabf53c4db6e272f863bd1326db *man/appendPolys.Rd
-2ce6b40cc711d1d46ba55461726910a4 *man/bcBathymetry.Rd
-79f29e174a44229685257dbe521bc886 *man/calcArea.Rd
+9f1a06a33371ded91b12533c2c4effec *man/bcBathymetry.Rd
+6eb35034f6abd47534bcf3456c221b0e *man/calcArea.Rd
 c0ddc71fc48b3ea15ade87d2c7bde052 *man/calcCentroid.Rd
 61c5f9259b6251327044a28579e21009 *man/calcConvexHull.Rd
 a8a1efad8e96d4447d224d936e899793 *man/calcGCdist.Rd
@@ -70,7 +70,7 @@ edbcdb31734e0516fa12d6be9be22765 *man/combineEvents.Rd
 75bf4507547f0f4c8b3d3a0f28e6c20c *man/convCP.Rd
 cb01392e29ccb7e9a160defecec881c6 *man/convDP.Rd
 bc01c055f29aaa81fac8b8e5f3ef2453 *man/convLP.Rd
-27b38e9f76f17291357fff2b003018fb *man/convUL.Rd
+7641f30fd31370589bace61958b7b392 *man/convUL.Rd
 b311f3062011736f60e11c61604adecb *man/dividePolys.Rd
 e961ebada429da044bd5687ae97a518a *man/extractPolyData.Rd
 224a789ca07c788682b7529feb59c918 *man/findCells.Rd
@@ -97,7 +97,7 @@ db89ccbcdd413faac280dc1a254516e9 *man/placeHoles.Rd
 276711e6ece22e4462d4cee78eb16c8a *man/plotPoints.Rd
 5df257317a39b686b80d228671106f5e *man/plotPolys.Rd
 3a06165201f9a1bfa5f75fc1286dc766 *man/print.Rd
-de9c4d6bbd20638991966fe430f1677f *man/pythagoras.Rd
+4ab4cf76d9321dd3237ad45e2b0fa439 *man/pythagoras.Rd
 fb17ff0c3cbf73f90c5e72b1d09b4e55 *man/refocusWorld.Rd
 a3a697eb0b93d5d2ae23502e9cad0d01 *man/rotatePolys.Rd
 2d20ba4f1da71a3142ef70d1fde28439 *man/summary.Rd
