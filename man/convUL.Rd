@@ -47,7 +47,7 @@ convUL (xydata, km=TRUE, southern=NULL)
   Copyright Ordnance Survey 2018 \bold{(v3.6)}. Southampton, UK.
 }
 \author{
-  \href{https://academic.macewan.ca/boersn/}{Nicholas M. Boers}, Associate Professor, MacEwan University, Edmonton AB\cr
+  \href{https://github.com/boersn/}{Nicholas M. Boers}, Software Engineer, Jobber, Edmonton AB\cr
   Maintainer: \href{mailto:rowan.haigh@dfo-mpo.gc.ca}{Rowan Haigh}, Program Head -- Offshore Rockfish\cr
   Pacific Biological Station (PBS), Fisheries & Oceans Canada (DFO), Nanaimo BC\cr
   \emph{locus opus}: Regional Headquarters, Vancouver BC\cr
